@@ -1,15 +1,10 @@
-# Create React App example with TypeScript
+# Example for material-ui datepickers / timepickers
+
+using date-fns-tz
 
 ## How to use
 
-Download the example [or clone the repo](https://github.com/mui/material-ui):
-
-<!-- #default-branch-switch -->
-
-```sh
-curl https://codeload.github.com/mui/material-ui/tar.gz/master | tar -xz --strip=2 material-ui-master/examples/create-react-app-with-typescript
-cd create-react-app-with-typescript
-```
+this is based on create-react-app-with-typescript (https://github.com/mui/material-ui):
 
 Install it and run:
 
@@ -22,21 +17,16 @@ or:
 
 <!-- #default-branch-switch -->
 
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui/material-ui/tree/master/examples/create-react-app-with-typescript)
+[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/mui-datepicker-example-different-timezone-rhf-ylz7y1)
 
 <!-- #default-branch-switch -->
-
-[![Edit on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mui/material-ui/tree/master/examples/create-react-app-with-typescript)
 
 ## The idea behind the example
 
-This example demonstrates how you can use [Create React App](https://github.com/facebookincubator/create-react-app) with [TypeScript](https://github.com/Microsoft/TypeScript).
-It includes `@mui/material` and its peer dependencies, including `emotion`, the default style engine in MUI v5.
-If you prefer, you can [use styled-components instead](https://mui.com/material-ui/guides/interoperability/#styled-components).
+In most cases you will be fine with saving utc times and displaying local times.
 
-## What's next?
+but in some circumstances (like a physical shop opening time) you want to show the time in a specific tz, no matter where the browser is.
 
-<!-- #default-branch-switch -->
+this example is how i managed to put that specific tz in a mui time picker.
 
-You now have a working example project.
-You can head back to the documentation, continuing browsing it from the [templates](https://mui.com/material-ui/getting-started/templates/) section.
+feedback and suggestions welcome.
