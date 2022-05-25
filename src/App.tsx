@@ -3,8 +3,9 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import { format } from "date-fns-tz";
+import { format, utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 import getTimezoneOffset from "date-fns-tz/getTimezoneOffset";
+import add from "date-fns/add";
 import * as React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ProTip from "./ProTip";
@@ -31,7 +32,18 @@ export interface IFormData {
 }
 
 export default function App() {
-  const d = new Date();
+  // set to current date
+  let d = new Date();
+  // set to a specific timestamp
+  d = new Date(1653466038401);
+  // set to a specific time and date in a tz
+  d = zonedTimeToUtc("2022-05-23T23:59:54.000", "Europe/Zurich");
+  // to the start of day in a tz
+  d = getStartOfDayTz(new Date(), "Europe/Zurich");
+  // end of day: this will not work with DST changes.
+  d = add(getStartOfDayTz(new Date(), "Europe/Zurich"), { days: 1 });
+  // this will
+  d = getStartOfDayTz(add(new Date(), { days: 180 }), "Europe/Zurich");
 
   const methods = useForm<IFormData>({
     defaultValues: {
@@ -99,18 +111,17 @@ export default function App() {
   );
 }
 
-export const getTimeTz = (dt: Date, timeZone: string) => {
-  return (
-    dt.getTime() -
-    getTimezoneOffset(timeZone, dt) -
-    dt.getTimezoneOffset() * 60 * 1000
-  );
+/** returns the timestamp's date in tz */
+export const getDatePartTz = (date: Date, timeZone: string) => {
+  return format(utcToZonedTime(date, timeZone), "yyyy-MM-dd");
 };
 
-export const getDateTz = (utcTime: number, timeZone: string) => {
-  return new Date(
-    utcTime +
-      getTimezoneOffset(timeZone, utcTime) +
-      new Date(utcTime).getTimezoneOffset() * 60 * 1000
-  );
+/** returns the start of the day of the timestamp's (in tz) */
+export const getStartOfDayTz = (date: Date, timeZone: string) => {
+  let t =
+    date.getTime() -
+    getTimezoneOffset(timeZone, date) -
+    date.getTimezoneOffset() * 60 * 1000;
+  const timeStamp = `${format(new Date(t), "yyyy-MM-dd")}T00:00:00.000`;
+  return zonedTimeToUtc(timeStamp, timeZone);
 };
